@@ -8,7 +8,7 @@ plugins {
 
 group = "coders.renovatio.donghang"
 
-// 환경별 gradle.properties 자동 로드
+// 환경 변수 또는 `gradle.properties`에서 ENVIRONMENT 로드
 val env = System.getenv("ENVIRONMENT") ?: findProperty("ENVIRONMENT")?.toString() ?: "local"
 val propertiesFile = rootProject.file("gradle/profiles/${env}.properties")
 
@@ -21,6 +21,15 @@ if (propertiesFile.exists()) {
 } else {
 	println("No specific properties file found for environment: $env. Using default settings.")
 }
+
+// 브랜치별 `jpa-common` 버전 동적 설정
+val branch = System.getenv("GITHUB_REF_NAME") ?: "dev"
+val jpaCommonVersion = when (branch) {
+	"main" -> "0.0.1-RELEASE"
+	"dev" -> "0.0.1-SNAPSHOT"
+	else -> "0.0.1-SNAPSHOT"
+}
+println("Using jpa-common version: $jpaCommonVersion")
 
 // `VERSION` 기본값 설정
 val finalVersion = findProperty("VERSION")?.toString() ?: "0.0.1-SNAPSHOT"
@@ -37,6 +46,13 @@ extra["springCloudVersion"] = "2023.0.5"
 repositories {
 	mavenCentral()
 	mavenLocal()
+	maven {
+		url = uri("https://maven.pkg.github.com/Renovatio-Coders/toolkit")
+		credentials {
+			username = System.getenv("GITHUB_USERNAME") ?: ""
+			password = System.getenv("GITHUB_TOKEN") ?: ""
+		}
+	}
 }
 
 dependencies {
@@ -52,6 +68,9 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	// 브랜치별 동적 `jpa-common` 의존성 추가
+	implementation("com.renovatio.toolkit:jpa-common:$jpaCommonVersion")
 }
 
 dependencyManagement {
@@ -68,25 +87,4 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-
-publishing {
-	repositories {
-		maven {
-			name = "GitHubPackages"
-			url = uri("https://maven.pkg.github.com/Renovatio-Coders/toolkit")
-			credentials {
-				username = System.getenv("GITHUB_USERNAME") ?: ""
-				password = System.getenv("GITHUB_TOKEN") ?: ""
-			}
-		}
-	}
-	publications {
-		create<MavenPublication>("gpr") {
-			from(components["java"])
-			groupId = "coders.renovatio"
-			artifactId = "donghang"
-			version = project.version.toString()
-		}
-	}
 }
