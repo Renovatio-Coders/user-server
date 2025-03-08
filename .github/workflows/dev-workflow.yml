@@ -65,7 +65,7 @@ jobs:
     needs: [ build, test ]  # build & test가 성공한 후 실행됨
     permissions:
       contents: read
-      packages: write  # GitHub Packages 배포를 위한 권한 추가
+      packages: write  # GitHub Packages에 업로드하려면 필요
 
     steps:
       - name: Checkout Repository
@@ -85,4 +85,5 @@ jobs:
       - name: Publish to GitHub Packages
         run: ./gradlew publish -Pversion=0.0.1-DEV-SNAPSHOT
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Packages 인증
+          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
