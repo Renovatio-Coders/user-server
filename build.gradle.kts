@@ -71,7 +71,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	// 브랜치별 동적 `jpa-common` 의존성 추가
-	implementation("com.renovatio.toolkit.jpa-common:$jpaCommonVersion")
+	implementation("com.renovatio.toolkit:jpa-common:$jpaCommonVersion")
 }
 
 dependencyManagement {
