@@ -47,6 +47,7 @@ repositories {
 	mavenCentral()
 	mavenLocal()
 	maven {
+		name = "GitHubPackages"
 		url = uri("https://maven.pkg.github.com/Renovatio-Coders/toolkit")
 		credentials {
 			username = System.getenv("GH_USERNAME") ?: findProperty("GH_USERNAME")?.toString() ?: ""
@@ -70,7 +71,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	// 브랜치별 동적 `jpa-common` 의존성 추가
-	implementation("com.renovatio.toolkit:jpa-common:$jpaCommonVersion")
+	implementation("com.renovatio.toolkit.jpa-common:$jpaCommonVersion")
 }
 
 dependencyManagement {
