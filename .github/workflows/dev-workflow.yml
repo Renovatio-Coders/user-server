@@ -85,5 +85,5 @@ jobs:
       - name: Publish to GitHub Packages
         run: ./gradlew publish -Pversion=0.0.1-DEV-SNAPSHOT
         env:
-          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
+          GH_PAT: ${{ secrets.GH_PAT }}
