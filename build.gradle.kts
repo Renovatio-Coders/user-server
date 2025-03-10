@@ -28,8 +28,8 @@ repositories {
 	maven {
 		url = uri("https://maven.pkg.github.com/Renovatio-Coders/toolkit")
 		credentials {
-			username = System.getenv("GITHUB_ACTOR") ?: ""
-			password = System.getenv("GH_PAT") ?: ""
+			username = System.getenv("GITHUB_ACTOR") ?: findProperty("GH_USERNAME")?.toString() ?: ""
+			password = System.getenv("GH_PAT") ?: findProperty("GH_PAT")?.toString() ?: ""
 		}
 	}
 }

@@ -14,6 +14,11 @@ jobs:
       packages: read
 
     steps:
+      - name: Debug GitHub Token
+        run: |
+          echo "Checking GitHub authentication..."
+          curl -u "${{ secrets.GITHUB_ACTOR }}:${{ secrets.GH_PAT }}" -X GET https://maven.pkg.github.com/Renovatio-Coders/toolkit/
+
       - name: Checkout Repository
         uses: actions/checkout@v4.2.0
 
