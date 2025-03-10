@@ -28,11 +28,12 @@ repositories {
 	maven {
 		url = uri("https://maven.pkg.github.com/Renovatio-Coders/toolkit")
 		credentials {
-			username = System.getenv("GH_USERNAME") ?: findProperty("GH_USERNAME")?.toString()
-			password = System.getenv("GH_PAT") ?: findProperty("GH_PAT")?.toString()
+			username = System.getenv("GITHUB_ACTOR") ?: ""
+			password = System.getenv("GH_PAT") ?: ""
 		}
 	}
 }
+
 
 dependencies {
 	implementation("com.renovatio.toolkit:jpa-common:$jpaCommonVersion")
