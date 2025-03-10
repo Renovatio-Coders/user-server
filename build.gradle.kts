@@ -50,3 +50,24 @@ dependencies {
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
+
+publishing {
+	publications {
+		create<MavenPublication>("gpr") {
+			from(components["java"])
+			groupId = "com.renovatio"
+			artifactId = "user-server"
+			version = project.version.toString()
+		}
+	}
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/Renovatio-Coders/user-server")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR") ?: findProperty("GH_USERNAME")?.toString() ?: ""
+				password = System.getenv("GH_PAT") ?: findProperty("GH_PAT")?.toString() ?: ""
+			}
+		}
+	}
+}
