@@ -2,9 +2,9 @@ name: Development CI
 
 on:
   push:
-    branches: ["dev"]
+    branches: [ "dev" ]
   pull_request:
-    branches: ["dev"]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -67,6 +67,8 @@ jobs:
 
       - name: Run Tests
         run: ./gradlew test
+    env:
+      GH_PAT: ${{ secrets.GH_PAT }}
 
   publish:
     runs-on: ubuntu-22.04
@@ -92,5 +94,5 @@ jobs:
 
       - name: Publish to GitHub Packages
         run: ./gradlew publish -Pversion=0.0.1-DEV-SNAPSHOT
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+    env:
+      GH_PAT: ${{ secrets.GH_PAT }}
